@@ -1,24 +1,37 @@
 # mock - Terraform Infrastructure
 
-Infrastructure as Code for mock using Terraform.
+Infrastructure as Code for mock using Terraform with modules from [templates repository](https://github.com/lucas-aversari/templates).
 
-## Structure
+## 📁 Directory Structure
 
 ```
 IAC/
 ├── Environments/
-│   └── dev/
-│       ├── main.tf
-│       ├── provider.tf
-│       ├── variables.tf
-│       └── variables.tfvars
-└── Modules/
-    └── (terraform modules)
+│   ├── dev/
+│   │   ├── provider.tf           # Terraform & provider config for dev
+│   │   └── variables.tfvars      # Dev environment configuration
+│   ├── qa/
+│   │   ├── provider.tf           # Terraform & provider config for qa
+│   │   └── variables.tfvars      # QA environment configuration
+│   └── prod/
+│       ├── provider.tf           # Terraform & provider config for prod
+│       └── variables.tfvars      # Prod environment configuration
+├── .gitignore                    # Protects sensitive files
+└── README.md                     # This file
 ```
+
+## 🏗️ Configuration Pattern
+
+Each environment directory contains two files:
+
+### provider.tf
+Defines Terraform version, required providers, backend configuration, and Azure provider settings.
+
+### variables.tfvars
+Defines the resources to be created and their configuration. All infrastructure is declared here using variables that reference modules from the templates repository.
 
 ## Deployed Resources
 
-- Key Vault
 - App Service
 
 ## Usage
@@ -29,11 +42,15 @@ This infrastructure is automatically deployed via GitHub Actions workflow.
 
 ```bash
 cd IAC/Environments/dev
-terraform init
+terraform init \
+  -backend-config="resource_group_name=${{ secrets.TF_STATE_RG }}" \
+  -backend-config="storage_account_name=${{ secrets.TF_STATE_STORAGE }}" \
+  -backend-config="container_name=tfstate" \
+  -backend-config="key=dev.tfstate"
 terraform plan -var-file=variables.tfvars
 terraform apply -var-file=variables.tfvars
 ```
 
 ## Created by Terraform Setup Wizard
 
-Generated on: 2026-02-11T21:13:59.331Z
+Generated on: 2026-02-11T21:58:39.688Z
