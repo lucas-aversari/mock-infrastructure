@@ -1,6 +1,6 @@
 environment         = "dev"
 project             = "mock"
-rg_location         = "westeurope"
+rg_location         = "eastus"
 resource_group_name = "mock-dev-rg"
 
 tags = {
