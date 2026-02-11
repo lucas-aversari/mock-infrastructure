@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.0"
+      version = "4.36.0"
     }
   }
   backend "azurerm" {
@@ -12,6 +12,12 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id     = "d7fae670-2697-4793-a5a3-b0961a825a1c"
-  storage_use_azuread = true
+  subscription_id      = "d7fae670-2697-4793-a5a3-b0961a825a1c"
+  storage_use_azuread  = true
+}
+
+provider "azurerm" {
+  alias    = "remote"
+  features {}
+  subscription_id = "d7fae670-2697-4793-a5a3-b0961a825a1c"
 }
